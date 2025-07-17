@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QRhiWidget>
+#include <QPushButton>
 #include <QFile>
 #include <rhi/qrhi.h>
 
@@ -104,6 +105,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     ExampleRhiWidget rhiWidget;
     rhiWidget.resize(1280, 720);
+    new QPushButton("This is a QPushButton", &rhiWidget);
     rhiWidget.show();
     return app.exec();
 }
