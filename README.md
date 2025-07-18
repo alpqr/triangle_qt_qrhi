@@ -7,3 +7,5 @@ Needs Qt >= 6.8.
 * 04_minimal_quick: underlay (or overlay) approach for Qt Quick
 * 05_minimal_quick_item: mix with a Qt Quick scene
 * 06_minimal_quick_rendernode: inline rendering for Qt Quick; for completeness - not ideal for such arbitrary 3D content
+
+![screenshot](screenshot.png)
