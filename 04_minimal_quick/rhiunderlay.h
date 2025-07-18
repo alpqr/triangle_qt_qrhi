@@ -12,17 +12,16 @@ class RhiUnderlay : public QQuickItem
 {
     Q_OBJECT
     QML_ELEMENT
-
-    Q_PROPERTY(qreal triangleRotation READ r WRITE setR NOTIFY rChanged)
+    Q_PROPERTY(float triangleRotation READ angle WRITE setAngle NOTIFY angleChanged)
 
 public:
     RhiUnderlay();
 
-    qreal r() const { return m_r; }
-    void setR(qreal t);
+    float angle() const { return m_angle; }
+    void setAngle(float a);
 
 signals:
-    void rChanged();
+    void angleChanged();
 
 public slots:
     void sync();
@@ -34,8 +33,8 @@ private slots:
 private:
     void releaseResources() override;
 
-    qreal m_r = 0;
     UnderlayRenderer *m_renderer = nullptr;
+    float m_angle = 0.0f;
 };
 
 // all graphics-related logic and resources - instances live on the render thread, if there is one
@@ -45,7 +44,7 @@ class UnderlayRenderer : public QObject
 
 public:
     void setWindow(QQuickWindow *window) { m_window = window; }
-    void setR(qreal r) { m_r = r; }
+    void setAngle(float a) { m_angle = a; }
 
 public slots:
     void frameStart();
@@ -53,7 +52,7 @@ public slots:
 
 private:
     QQuickWindow *m_window;
-    qreal m_r = 0.0f;
+    float m_angle = 0.0f;
 
     std::unique_ptr<QRhiBuffer> m_vbuf;
     std::unique_ptr<QRhiBuffer> m_ubuf;

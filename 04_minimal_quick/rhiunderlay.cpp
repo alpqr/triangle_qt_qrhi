@@ -46,12 +46,16 @@ void RhiUnderlay::releaseResources()
     m_renderer = nullptr;
 }
 
-void RhiUnderlay::setR(qreal r)
+void RhiUnderlay::setAngle(float a)
 {
-    if (r == m_r)
+    if (m_angle == a)
         return;
-    m_r = r;
-    emit rChanged();
+
+    m_angle = a;
+    emit angleChanged();
+
+    // update() (as in QQuickItem's) is not sufficient here; RhiUnderlay is not
+    // a proper visual Item, so use the window's update() instead
     if (window())
         window()->update();
 }
@@ -70,7 +74,7 @@ void RhiUnderlay::sync()
         // would render the Underlay on top (overlay).
         connect(window(), &QQuickWindow::beforeRenderPassRecording, m_renderer, &UnderlayRenderer::mainPassRecordingStart, Qt::DirectConnection);
     }
-    m_renderer->setR(m_r);
+    m_renderer->setAngle(m_angle);
     m_renderer->setWindow(window());
 }
 
@@ -141,7 +145,7 @@ void UnderlayRenderer::frameStart()
     viewProjection.perspective(45.0f, outputSizeInPixels.width() / (float) outputSizeInPixels.height(), 0.01f, 1000.0f);
     viewProjection.translate(0, 0, -4);
     QMatrix4x4 modelViewProjection = viewProjection;
-    modelViewProjection.rotate(m_r, 0, 1, 0);
+    modelViewProjection.rotate(m_angle, 0, 1, 0);
 
     resourceUpdates->updateDynamicBuffer(m_ubuf.get(), 0, 64, modelViewProjection.constData());
 
